@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Historical Fire Patterns & Importance | Montesinho Wildfire System{% endblock %}
+
+{% block content %}
+<header class="hero-banner d-flex flex-wrap justify-content-between align-items-center" style="background-image: linear-gradient(90deg, rgba(11, 24, 17, 0.92) 0%, rgba(18, 43, 29, 0.78) 60%, rgba(11, 24, 17, 0.45) 100%), url('{{ url_for('static', filename='images/pine forest mountains.jpg') }}');">
+  <div>
+    <div class="small fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 0.06em;">
+      <i class="fa-solid fa-chart-line me-1"></i> Exploratory Data Analysis &amp; Feature Importance
+    </div>
+    <h1 class="h4 fw-bold mb-1">Historical Wildfire Patterns in Montesinho Natural Park (2004-2025)</h1>
+    <p class="small text-light opacity-75 mb-0">
+      Empirical distribution of the 1,644 official-boundary wildfire records, seasonal climate profiles, and validation permutation importance.
+    </p>
+  </div>
+  <div class="text-md-end mt-3 mt-md-0">
+    <div class="small text-light opacity-75">Official Audited Cohort</div>
+    <div class="fw-bold text-warning">1,644 Events &bull; Skewness 13.055</div>
+  </div>
+</header>
+
+<!-- Summary KPI Row -->
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6">
+    <div class="bento-card py-3">
+      <div class="card-overline">Official Cohort Events</div>
+      <div class="h3 fw-bold text-primary mb-0">1,644</div>
+      <div class="small text-secondary">Inside PN Montesinho (2004-2025)</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="bento-card py-3">
+      <div class="card-overline">Median vs. Mean Area</div>
+      <div class="h3 fw-bold text-warning mb-0">1.00 / 9.86 ha</div>
+      <div class="small text-secondary">Extreme right skew (13.055)</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="bento-card py-3">
+      <div class="card-overline">Recorded Zero-Area Fires</div>
+      <div class="h3 fw-bold text-info mb-0">19 (1.16%)</div>
+      <div class="small text-secondary">Down from 47.56% in legacy UCI</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="bento-card py-3">
+      <div class="card-overline">Major Wildfires (&ge;100 ha)</div>
+      <div class="h3 fw-bold text-danger mb-0">31 Events</div>
+      <div class="small text-secondary">Max event: 1,057.50 ha (2018)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 1 of Visuals: Spatial Filter Map & Feature Importance -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Spatial Cohort Construction</div>
+      <h2 class="h6 fw-bold mb-2">Official PN Montesinho Boundary &amp; Ignition Map</h2>
+      <p class="small text-secondary mb-3">
+        Point-in-polygon filtering against the official ICNF RNAP boundary (<code>EPSG:3763</code>) retains 1,644 verified park events across Bragança and Vinhais.
+      </p>
+      <img src="{{ url_for('static', filename='figures/montesinho_spatial_filter_map.png') }}" class="chart-img" alt="Montesinho Spatial Filter Map">
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Validation Feature Audit (30 Repeats)</div>
+      <h2 class="h6 fw-bold mb-2">Grouped Permutation Importance (2018-2021 Validation)</h2>
+      <p class="small text-secondary mb-3">
+        Jointly permuting correlated coordinate and cyclical calendar pairs reveals that Map Location (+0.074 RMSLE), Day of Year (+0.041), Alert Hour (+0.037), and Drought Code (+0.024) drive out-of-time accuracy.
+      </p>
+      <img src="{{ url_for('static', filename='figures/model_validation_feature_importance.png') }}" class="chart-img" alt="Validation Grouped Permutation Importance">
+    </div>
+  </div>
+</div>
+
+<!-- Row 2 of Visuals: Seasonality, Target Distribution, and Temperature Profile -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-4">
+    <div class="bento-card h-100">
+      <div class="card-overline">Target Distribution</div>
+      <h2 class="h6 fw-bold mb-2">Raw vs. <code>log1p(AreaTotal_ha)</code></h2>
+      <img src="{{ url_for('static', filename='figures/burned_area_log1p_distribution.png') }}" class="chart-img" alt="Burned Area Log1p Distribution">
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="bento-card h-100">
+      <div class="card-overline">Seasonal Concentration</div>
+      <h2 class="h6 fw-bold mb-2">Monthly Wildfire Frequency &amp; Area</h2>
+      <img src="{{ url_for('static', filename='figures/montesinho_events_by_month.png') }}" class="chart-img" alt="Monthly Events Profile">
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="bento-card h-100">
+      <div class="card-overline">NASA POWER Meteorology</div>
+      <h2 class="h6 fw-bold mb-2">Monthly Ignition-Hour Temperature</h2>
+      <img src="{{ url_for('static', filename='figures/weather_temperature_by_month.png') }}" class="chart-img" alt="Monthly Temperature Profile">
+    </div>
+  </div>
+</div>
+
+<!-- Row 3: Tables for Grouped Permutation Importance & Monthly Weather -->
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Quantitative Importance Table</div>
+      <h2 class="h6 fw-bold mb-3">Validation Grouped Permutation Importance (2018-2021)</h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0">
+          <thead>
+            <tr class="text-secondary small">
+              <th>Feature Group</th>
+              <th>Predictors</th>
+              <th>RMSLE Increase</th>
+              <th>MAE Increase (ha)</th>
+            </tr>
+          </thead>
+          <tbody class="small">
+            {% for row in perm_importance %}
+            <tr>
+              <td class="fw-semibold">{{ row.feature_group }}</td>
+              <td class="text-secondary"><code>{{ row.features }}</code></td>
+              <td class="fw-bold text-success">+{{ "%.3f"|format(row.rmsle_increase_mean) }} &plusmn; {{ "%.3f"|format(row.rmsle_increase_std) }}</td>
+              <td>{{ "%+.3f"|format(row.mae_increase_ha_mean) }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Meteorological Regime Table</div>
+      <h2 class="h6 fw-bold mb-3">Monthly NASA POWER Weather Profile at Ignition Hour</h2>
+      <div class="table-responsive">
+        <table class="table table-sm table-hover align-middle mb-0">
+          <thead>
+            <tr class="text-secondary small">
+              <th>Month</th>
+              <th>Events</th>
+              <th>Median Temp (°C)</th>
+              <th>Median RH (%)</th>
+              <th>Median Wind (m/s)</th>
+              <th>Wet 24h (%)</th>
+            </tr>
+          </thead>
+          <tbody class="small">
+            {% for row in weather_by_month %}
+            <tr>
+              <td class="fw-semibold">Month {{ row.Mes }}</td>
+              <td>{{ row.records }}</td>
+              <td>{{ "%.2f"|format(row.median_temp_c) }}</td>
+              <td>{{ "%.2f"|format(row.median_rh_pct) }}</td>
+              <td>{{ "%.2f"|format(row.median_wind_mps) }}</td>
+              <td>{{ "%.1f"|format(row.wet_24h_pct) }}%</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

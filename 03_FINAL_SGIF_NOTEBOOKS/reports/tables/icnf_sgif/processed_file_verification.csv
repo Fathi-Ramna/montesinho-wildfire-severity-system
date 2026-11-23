@@ -1,0 +1,10 @@
+file,exists,bytes
+data/processed/icnf_sgif/montesinho_model_ready_unscaled_all.csv,True,695763
+data/processed/icnf_sgif/montesinho_model_ready_unscaled_train.csv,True,526464
+data/processed/icnf_sgif/montesinho_model_ready_unscaled_validation.csv,True,88941
+data/processed/icnf_sgif/montesinho_model_ready_unscaled_test.csv,True,81088
+data/processed/icnf_sgif/montesinho_model_ready_scaled_all.csv,True,817258
+data/processed/icnf_sgif/montesinho_model_ready_scaled_train.csv,True,618716
+data/processed/icnf_sgif/montesinho_model_ready_scaled_validation.csv,True,104128
+data/processed/icnf_sgif/montesinho_model_ready_scaled_test.csv,True,95144
+data/processed/icnf_sgif/model_feature_sets.json,True,1647

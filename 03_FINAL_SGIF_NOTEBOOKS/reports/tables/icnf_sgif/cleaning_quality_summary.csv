@@ -1,0 +1,12 @@
+check,records
+Core records,1644
+Duplicate SGIF ID rows,0
+Rows missing any essential field,0
+Negative target rows,0
+Area-component disagreements above 0.011 ha,0
+Alert-year mismatches,0
+Rows missing one or more FWI fields,3
+Rows with invalid FWI ranges,0
+Extinction before alert,0
+First intervention before alert,0
+Basic model-eligible records,1644

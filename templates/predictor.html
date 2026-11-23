@@ -1,0 +1,611 @@
+{% extends "base.html" %}
+{% block title %}Live Severity Predictor | Montesinho Wildfire System{% endblock %}
+
+{% block content %}
+<!-- Scenic Hero Banner using local pine forest mountains.jpg -->
+<header class="hero-banner d-flex flex-wrap justify-content-between align-items-center" style="background-image: linear-gradient(90deg, rgba(11, 24, 17, 0.92) 0%, rgba(18, 43, 29, 0.78) 60%, rgba(11, 24, 17, 0.45) 100%), url('{{ url_for('static', filename='images/pine forest mountains.jpg') }}');">
+  <div>
+    <div class="small fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 0.06em;">
+      <i class="fa-solid fa-tree me-1"></i> Montesinho Natural Park, Portugal
+    </div>
+    <h1 class="h4 fw-bold mb-1">Wildfire Burned-Area Severity &amp; Early Warning System</h1>
+    <p class="small text-light opacity-75 mb-0">
+      Configure ignition-time conditions, select a location on the park map, and run the hybrid ensemble assessment.
+    </p>
+  </div>
+  <div class="text-md-end mt-3 mt-md-0">
+    <div class="small text-light opacity-75">Loaded Form Profile</div>
+    <div class="fw-bold text-warning" id="activePresetLabel">{{ form_data.preset_label }}</div>
+  </div>
+</header>
+
+<!-- ================================================================= -->
+<!-- ROW 1 (TOP): STEP 1 INPUTS (LEFT) & STEP 2 MAP + DRYNESS (RIGHT)  -->
+<!-- ================================================================= -->
+<div class="row g-4 mb-4">
+
+  <!-- Top-Left Card: Step 1 Observable Conditions Input Form -->
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+          <div class="card-overline">Step 1: Enter Observable Conditions</div>
+          <h2 class="h6 fw-bold mb-0">Weather, Season &amp; Fuel Dryness</h2>
+        </div>
+        <span class="small text-secondary"><i class="fa-regular fa-clock me-1"></i> Pre-Ignition Only</span>
+      </div>
+
+      <!-- Tactile Scenario Preset Chip Bar (Fills form without auto-submitting) -->
+      <div class="preset-chip-bar">
+        <button type="button" class="preset-chip {% if form_data.preset_key == 'spring_low' %}active{% endif %}" data-preset="spring_low" onclick="applyScenarioPreset('spring_low')">
+          <span class="chip-dot" style="background-color: #22c55e;"></span> Spring Low
+        </button>
+        <button type="button" class="preset-chip {% if form_data.preset_key == 'august_moderate' %}active{% endif %}" data-preset="august_moderate" onclick="applyScenarioPreset('august_moderate')">
+          <span class="chip-dot" style="background-color: #eab308;"></span> August Moderate
+        </button>
+        <button type="button" class="preset-chip {% if form_data.preset_key == 'drought_high' %}active{% endif %}" data-preset="drought_high" onclick="applyScenarioPreset('drought_high')">
+          <span class="chip-dot" style="background-color: #f97316;"></span> Late-Summer Drought
+        </button>
+        <button type="button" class="preset-chip {% if form_data.preset_key == 'extreme_wind' %}active{% endif %}" data-preset="extreme_wind" onclick="applyScenarioPreset('extreme_wind')">
+          <span class="chip-dot" style="background-color: #ef4444;"></span> Extreme Wind
+        </button>
+        <button type="button" class="preset-chip {% if form_data.preset_key == 'winter_wet' %}active{% endif %}" data-preset="winter_wet" onclick="applyScenarioPreset('winter_wet')">
+          <span class="chip-dot" style="background-color: #38bdf8;"></span> Winter Wet
+        </button>
+      </div>
+
+      <!-- Subtle Status Pill Shown When a Preset is Loaded -->
+      <div id="presetStatusNotice" class="alert alert-warning py-2 px-3 small mb-3" style="display: {% if preset_loaded %}flex{% else %}none{% endif %}; align-items: center; gap: 0.5rem;">
+        <i class="fa-solid fa-circle-check"></i>
+        <span>Preset loaded: click <strong>Predict Fire Severity</strong> below to run assessment.</span>
+      </div>
+
+      <form method="POST" action="{{ url_for('predict') }}" id="predictionForm">
+        <input type="hidden" name="preset_key" id="preset_key" value="{{ form_data.preset_key }}">
+        <input type="hidden" name="preset_label" id="preset_label" value="{{ form_data.preset_label }}">
+        <input type="hidden" name="alert_hour" id="alert_hour" value="{{ form_data.alert_hour }}">
+
+        <!-- Row 1: Park Sector, Alert Date, and Standard Alert Time (Separate Fields) -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-5">
+            <label class="form-label small text-secondary mb-1" for="zone_select">
+              <i class="fa-solid fa-location-crosshairs text-info me-1"></i> Park Sector / Zone
+            </label>
+            <select class="form-select form-select-sm py-2" id="zone_select" name="zone_select" onchange="updateCoordinatesFromZone(this.value)">
+              <option value="vinhais_west" {% if form_data.zone_select == 'vinhais_west' %}selected{% endif %}>Vinhais West (Forest Ridge)</option>
+              <option value="braganca_north" {% if form_data.zone_select == 'braganca_north' %}selected{% endif %}>Bragança North (Serra Crest)</option>
+              <option value="central_valley" {% if form_data.zone_select == 'central_valley' %}selected{% endif %}>Central Montesinho Valley</option>
+              <option value="southeast_border" {% if form_data.zone_select == 'southeast_border' %}selected{% endif %}>Southeast Border Sector</option>
+            </select>
+          </div>
+
+          <div class="col-md-4 col-7">
+            <label class="form-label small text-secondary mb-1" for="alert_date">
+              <i class="fa-regular fa-calendar text-warning me-1"></i> Alert Date
+            </label>
+            <input type="date" class="form-control form-control-sm py-2" id="alert_date" name="alert_date" value="{{ form_data.alert_date }}" required>
+          </div>
+
+          <div class="col-md-3 col-5">
+            <label class="form-label small text-secondary mb-1" for="alert_time">
+              <i class="fa-regular fa-clock text-primary me-1"></i> Alert Time
+            </label>
+            <input type="time" class="form-control form-control-sm py-2" id="alert_time" name="alert_time" value="{{ form_data.alert_time|default('14:00') }}" onchange="syncAlertHourFromTime()" required>
+          </div>
+        </div>
+
+        <!-- Row 2: Tactile Weather Slider Panels (No Redundant Value Boxes; Units in Labels) -->
+        <div class="row g-3 mb-3">
+          <div class="col-md-4 col-12">
+            <div class="weather-control-box">
+              <label class="small text-secondary fw-semibold mb-2 d-block" for="weather_temp_c">
+                <i class="fa-solid fa-temperature-three-quarters text-warning me-1"></i> Air Temp (°C)
+              </label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="range" class="form-range flex-grow-1" id="tempSlider" min="-5" max="42" step="0.1" value="{{ form_data.weather_temp_c }}" oninput="syncWeatherSlider('weather_temp_c', 'tempSlider', true)">
+                <input type="number" class="form-control form-control-sm weather-num-input" id="weather_temp_c" name="weather_temp_c" min="-5" max="45" step="0.1" value="{{ form_data.weather_temp_c }}" oninput="syncWeatherSlider('weather_temp_c', 'tempSlider', false)" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-12">
+            <div class="weather-control-box">
+              <label class="small text-secondary fw-semibold mb-2 d-block" for="weather_rh_pct">
+                <i class="fa-solid fa-droplet text-info me-1"></i> Humidity (%)
+              </label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="range" class="form-range flex-grow-1" id="rhSlider" min="5" max="100" step="0.1" value="{{ form_data.weather_rh_pct }}" oninput="syncWeatherSlider('weather_rh_pct', 'rhSlider', true)">
+                <input type="number" class="form-control form-control-sm weather-num-input" id="weather_rh_pct" name="weather_rh_pct" min="0" max="100" step="0.1" value="{{ form_data.weather_rh_pct }}" oninput="syncWeatherSlider('weather_rh_pct', 'rhSlider', false)" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 col-12">
+            <div class="weather-control-box">
+              <label class="small text-secondary fw-semibold mb-2 d-block" for="weather_wind_mps">
+                <i class="fa-solid fa-wind text-primary me-1"></i> Wind Speed (m/s)
+              </label>
+              <div class="d-flex align-items-center gap-2">
+                <input type="range" class="form-range flex-grow-1" id="windSlider" min="0" max="15" step="0.1" value="{{ form_data.weather_wind_mps }}" oninput="syncWeatherSlider('weather_wind_mps', 'windSlider', true)">
+                <input type="number" class="form-control form-control-sm weather-num-input" id="weather_wind_mps" name="weather_wind_mps" min="0" max="30" step="0.1" value="{{ form_data.weather_wind_mps }}" oninput="syncWeatherSlider('weather_wind_mps', 'windSlider', false)" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: Forest Floor Dryness & Recent 24h Rain -->
+        <div class="row g-3 mb-4">
+          <div class="col-md-8">
+            <label class="form-label small text-secondary mb-1" for="dryness_level">
+              <i class="fa-solid fa-leaf text-success me-1"></i> Forest Floor &amp; Soil Dryness Level
+            </label>
+            <select class="form-select form-select-sm py-2" id="dryness_level" name="dryness_level" onchange="updateFwiFromDryness(this.value)">
+              <option value="low" {% if form_data.dryness_level == 'low' %}selected{% endif %}>Damp Forest Floor (Recent Rain / Spring)</option>
+              <option value="moderate" {% if form_data.dryness_level == 'moderate' %}selected{% endif %}>Normal Summer Dryness (Moderate Fuel Load)</option>
+              <option value="high" {% if form_data.dryness_level == 'high' %}selected{% endif %}>Prolonged Summer Drought (Very Dry Soil &amp; Litter)</option>
+              <option value="extreme" {% if form_data.dryness_level == 'extreme' %}selected{% endif %}>Extreme Heatwave &amp; Critical Fuel Buildup</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label small text-secondary mb-1" for="weather_rain_mm_24h">
+              <i class="fa-solid fa-cloud-rain text-info me-1"></i> Recent 24h Rain
+            </label>
+            <div class="input-group input-group-sm">
+              <input type="number" class="form-control py-2" id="weather_rain_mm_24h" name="weather_rain_mm_24h" min="0" step="0.1" value="{{ form_data.weather_rain_mm_24h }}" required>
+              <span class="input-group-text small text-secondary">mm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collapsible Expert Drawer Accordion Bar -->
+        <div class="mb-4">
+          <a class="expert-drawer-toggle" data-bs-toggle="collapse" href="#expertFwiDrawer" role="button" aria-expanded="false">
+            <span><i class="fa-solid fa-sliders text-primary me-2"></i> Fine-Tune Official FWI Codes (Ranger / Expert Mode)</span>
+            <span class="value-pill text-secondary fw-normal">7 FWI + ETRS89 <i class="fa-solid fa-chevron-down ms-1"></i></span>
+          </a>
+          <div class="collapse mt-2" id="expertFwiDrawer">
+            <div class="p-3 rounded border border-secondary border-opacity-25">
+              <div class="row g-2 mb-2">
+                <div class="col-4">
+                  <label class="small text-secondary" style="font-size:0.72rem;" for="municipality">Municipality</label>
+                  <select class="form-select form-select-sm" id="municipality" name="municipality">
+                    <option value="Bragança" {% if form_data.municipality == 'Bragança' %}selected{% endif %}>Bragança</option>
+                    <option value="Vinhais" {% if form_data.municipality == 'Vinhais' %}selected{% endif %}>Vinhais</option>
+                  </select>
+                </div>
+                <div class="col-4">
+                  <label class="small text-secondary" style="font-size:0.72rem;" for="x_etrs89_km">ETRS89 X (km)</label>
+                  <input type="number" class="form-control form-control-sm" id="x_etrs89_km" name="x_etrs89_km" step="0.001" value="{{ form_data.x_etrs89_km }}" required>
+                </div>
+                <div class="col-4">
+                  <label class="small text-secondary" style="font-size:0.72rem;" for="y_etrs89_km">ETRS89 Y (km)</label>
+                  <input type="number" class="form-control form-control-sm" id="y_etrs89_km" name="y_etrs89_km" step="0.001" value="{{ form_data.y_etrs89_km }}" required>
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col-3"><label class="small text-secondary" style="font-size:0.72rem;" for="FFMC">FFMC</label><input type="number" class="form-control form-control-sm" id="FFMC" name="FFMC" step="0.01" value="{{ form_data.FFMC }}" oninput="refreshDrynessIndicators()" required></div>
+                <div class="col-3"><label class="small text-secondary" style="font-size:0.72rem;" for="DMC">DMC</label><input type="number" class="form-control form-control-sm" id="DMC" name="DMC" step="0.01" value="{{ form_data.DMC }}" required></div>
+                <div class="col-3"><label class="small text-secondary" style="font-size:0.72rem;" for="DC">DC</label><input type="number" class="form-control form-control-sm" id="DC" name="DC" step="0.01" value="{{ form_data.DC }}" oninput="refreshDrynessIndicators()" required></div>
+                <div class="col-3"><label class="small text-secondary" style="font-size:0.72rem;" for="ISI">ISI</label><input type="number" class="form-control form-control-sm" id="ISI" name="ISI" step="0.01" value="{{ form_data.ISI }}" required></div>
+                <div class="col-4"><label class="small text-secondary" style="font-size:0.72rem;" for="BUI">BUI</label><input type="number" class="form-control form-control-sm" id="BUI" name="BUI" step="0.01" value="{{ form_data.BUI }}" required></div>
+                <div class="col-4"><label class="small text-secondary" style="font-size:0.72rem;" for="FWI">FWI</label><input type="number" class="form-control form-control-sm" id="FWI" name="FWI" step="0.01" value="{{ form_data.FWI }}" required></div>
+                <div class="col-4"><label class="small text-secondary" style="font-size:0.72rem;" for="DSR">DSR</label><input type="number" class="form-control form-control-sm" id="DSR" name="DSR" step="0.01" value="{{ form_data.DSR }}" required></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-assess w-100">
+          <i class="fa-solid fa-fire me-2"></i> Predict Fire Severity
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Top-Right Card: Step 2 Split into Separate Park Map & Fuel Dryness Sections -->
+  <div class="col-lg-6">
+    <div class="bento-card h-100 d-flex flex-column justify-content-between">
+      <div>
+        <!-- Section 2A: Montesinho Natural Park Map -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <div class="card-overline">Step 2A: Spatial Ignition Context</div>
+            <h2 class="h6 fw-bold mb-0">Montesinho Natural Park Map</h2>
+          </div>
+          <span class="value-pill text-info" id="coordReadout">
+            <i class="fa-solid fa-location-dot"></i> {{ form_data.municipality }} ({{ "%.1f"|format(form_data.x_etrs89_km) }}, {{ "%.1f"|format(form_data.y_etrs89_km) }} km)
+          </span>
+        </div>
+
+        <div id="parkLeafletMap" class="map-canvas mb-4"></div>
+      </div>
+
+      <!-- Section 2B: Fuel & Atmospheric Dryness Indicators -->
+      <div class="pt-3 border-top border-secondary border-opacity-25">
+        <div class="card-overline">Step 2B: Pre-Ignition Fuel &amp; Climate State</div>
+        <h3 class="h6 fw-bold mb-3">Fuel &amp; Atmospheric Dryness Indicators</h3>
+
+        <div class="small">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-secondary" id="ffmcTitle">Surface Litter Flammability (Fine Fuel FFMC {{ "%.1f"|format(form_data.FFMC) }})</span>
+            <span class="fw-bold text-warning" id="ffmcLabel">{{ dryness.ffmc_pct }}% ({% if dryness.ffmc_pct >= 88 %}Very High{% elif dryness.ffmc_pct >= 75 %}Moderate{% else %}Low{% endif %})</span>
+          </div>
+          <div class="progress progress-thin mb-3">
+            <div class="progress-bar bg-warning" id="ffmcBar" style="width: {{ dryness.ffmc_pct }}%"></div>
+          </div>
+
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-secondary" id="dcTitle">Deep Soil Drought Severity (Drought Code DC {{ "%.0f"|format(form_data.DC) }})</span>
+            <span class="fw-bold text-danger" id="dcLabel">{{ dryness.dc_pct }}% ({% if dryness.dc_pct >= 75 %}Severe Summer Drought{% elif dryness.dc_pct >= 40 %}Moderate Dryness{% else %}Moist Soil{% endif %})</span>
+          </div>
+          <div class="progress progress-thin mb-3">
+            <div class="progress-bar bg-danger" id="dcBar" style="width: {{ dryness.dc_pct }}%"></div>
+          </div>
+
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-secondary" id="rhTitle">Atmospheric Dryness (Low Humidity Stress: {{ "%.1f"|format(form_data.weather_rh_pct) }}% RH)</span>
+            <span class="fw-bold text-info" id="rhLabel">{{ dryness.rh_stress_pct }}%</span>
+          </div>
+          <div class="progress progress-thin">
+            <div class="progress-bar bg-info" id="rhBar" style="width: {{ dryness.rh_stress_pct }}%"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ================================================================= -->
+<!-- ROW 2 (BOTTOM): ASSESSMENT RESULTS & RESPONSE PROTOCOL            -->
+<!-- ================================================================= -->
+{% if prediction %}
+<div class="row g-4">
+
+  <!-- Bottom-Left Card: Fire Severity Prediction Readout & Model Breakdown -->
+  <div class="col-lg-6">
+    <div class="bento-card h-100 d-flex flex-column justify-content-between">
+      <div>
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            <div class="card-overline">Estimated Fire Severity</div>
+            <div class="pred-hero-value" id="predValueDisplay" style="color: {{ prediction.risk.hex_color }};">
+              {{ "%.2f"|format(prediction.sgif_blend_ha) }} <span class="fs-4 fw-semibold text-secondary">hectares (ha)</span>
+            </div>
+          </div>
+          <span class="badge rounded-pill px-3 py-2 fw-bold" id="riskBadgeDisplay" style="background-color: {{ prediction.risk.hex_color }} !important; color: {% if prediction.risk.badge_label == 'MODERATE RISK' %}#0f172a{% else %}#ffffff{% endif %} !important;">
+            <i class="fa-solid fa-triangle-exclamation me-1"></i> {{ prediction.risk.badge_label }}
+          </span>
+        </div>
+
+        <!-- Plain-English Translation -->
+        <div class="mt-3 mb-2 small">
+          <span class="fw-semibold" id="humanScaleText">
+            <i class="fa-solid fa-ruler-combined text-warning me-1"></i> Equivalent to {{ prediction.pitches_str }}
+          </span>
+          <span class="text-secondary mx-2">|</span>
+          <span class="text-secondary" id="percentileText">
+            Larger than <strong>{{ prediction.hist_pct }}%</strong> of historical Montesinho fires
+          </span>
+        </div>
+
+        <!-- 4-Zone Visual Severity Scale -->
+        <div class="severity-bar-track">
+          <div class="severity-marker" id="severityMarker" style="left: {{ prediction.marker_pct }}%;"></div>
+        </div>
+        <div class="d-flex justify-content-between small text-secondary" style="font-size: 0.76rem;">
+          <span class="{% if prediction.sgif_blend_ha < 1.0 %}fw-bold text-success{% endif %}">Low (&lt;1 ha)</span>
+          <span class="{% if prediction.sgif_blend_ha >= 1.0 and prediction.sgif_blend_ha < 10.0 %}fw-bold text-warning{% endif %}">Moderate (1-10 ha)</span>
+          <span class="{% if prediction.sgif_blend_ha >= 10.0 and prediction.sgif_blend_ha < 100.0 %}fw-bold text-warning{% endif %}">High (10-100 ha)</span>
+          <span class="{% if prediction.sgif_blend_ha >= 100.0 %}fw-bold text-danger{% endif %}">Extreme (&ge;100 ha)</span>
+        </div>
+      </div>
+
+      <!-- Collapsible Technical Model Breakdown -->
+      <div class="mt-4 pt-3 border-top border-secondary border-opacity-25">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+          <span class="small text-secondary">
+            SGIF Blend (80/20): <strong>{{ "%.2f"|format(prediction.sgif_blend_ha) }} ha</strong> &bull;
+            Weather Blend (90/10): <strong>{{ "%.2f"|format(prediction.weather_blend_ha) }} ha</strong>
+          </span>
+          <a class="small text-info text-decoration-none fw-semibold" data-bs-toggle="collapse" href="#modelTechDrawer" role="button" aria-expanded="false">
+            <i class="fa-solid fa-chart-bar me-1"></i> View Model Breakdown
+          </a>
+        </div>
+        <div class="collapse mt-3" id="modelTechDrawer">
+          <div class="small text-secondary mb-2">
+            80% RBF SVR (Log-Space Base): <strong>{{ "%.2f"|format(prediction.sgif_svr_ha) }} ha</strong> &bull;
+            20% Poisson HistGBR (Raw-Space Tail): <strong>{{ "%.2f"|format(prediction.sgif_poisson_ha) }} ha</strong>
+          </div>
+          <div style="height: 120px;">
+            <canvas id="modelBreakdownChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom-Right Card: Numbered Recommended Response Protocol (No redundant footer note) -->
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="ranger-strip" style="background-image: linear-gradient(90deg, rgba(15, 29, 21, 0.88) 0%, rgba(15, 29, 21, 0.35) 100%), url('{{ url_for('static', filename='images/forest ranger.jpg') }}');">
+        <div>
+          <div class="card-overline text-warning mb-0">Recommended Response Protocol</div>
+          <div class="fw-bold">{{ prediction.risk.headline }}</div>
+        </div>
+      </div>
+
+      {% for item in prediction.risk.checklist %}
+      <div class="advisory-item">
+        <i class="fa-solid {{ item.icon }} text-warning mt-1"></i>
+        <div><strong>{{ item.title }}:</strong> {{ item.detail }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% else %}
+<!-- Neutral Initial State ("Ready for Assessment") Before Form Submission -->
+<div class="bento-card ready-state-card">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+    <div class="d-flex align-items-center gap-3">
+      <span class="value-pill text-warning fs-5 p-3 rounded-circle">
+        <i class="fa-solid fa-compass"></i>
+      </span>
+      <div>
+        <div class="card-overline mb-0">Decision-Support Engine Standby</div>
+        <h2 class="h5 fw-bold mb-0">Ready for Fire Severity Assessment</h2>
+      </div>
+    </div>
+    <span class="value-pill text-secondary">
+      <i class="fa-solid fa-shield-halved text-success"></i> Waiting for Scenario Submission
+    </span>
+  </div>
+
+  <p class="small text-secondary mb-3">
+    No burned-area forecast has been computed yet for the current form values. Complete the steps below to run a leakage-free assessment:
+  </p>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="ready-step-box">
+        <div class="small fw-bold text-success mb-1"><i class="fa-solid fa-1 me-1"></i> Choose Weather &amp; Dryness</div>
+        <div class="small text-secondary">Select a historical scenario preset or adjust temperature, humidity, wind, and forest floor dryness in <strong>Step 1</strong>.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="ready-step-box">
+        <div class="small fw-bold text-warning mb-1"><i class="fa-solid fa-2 me-1"></i> Pin Ignition Location</div>
+        <div class="small text-secondary">Pick a park sector or click directly inside the <strong>Montesinho Natural Park Map</strong> in <strong>Step 2A</strong> to update coordinates.</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="ready-step-box">
+        <div class="small fw-bold text-info mb-1"><i class="fa-solid fa-3 me-1"></i> Predict Fire Severity</div>
+        <div class="small text-secondary">Click <strong>"Predict Fire Severity"</strong> to run the <code>80% SVR + 20% Poisson</code> blend, view the 4-zone risk scale, and log the test.</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const SCENARIO_PRESETS = {{ presets | tojson }};
+
+  function syncAlertHourFromTime() {
+    const timeEl = document.getElementById("alert_time");
+    const hourEl = document.getElementById("alert_hour");
+    if (!timeEl || !hourEl || !timeEl.value.includes(":")) return;
+    const [hh, mm] = timeEl.value.split(":").map(Number);
+    if (!Number.isNaN(hh) && !Number.isNaN(mm)) {
+      hourEl.value = (hh + mm / 60.0).toFixed(2);
+    }
+  }
+
+  function refreshDrynessIndicators() {
+    const ffmcVal = parseFloat(document.getElementById("FFMC").value || 0);
+    const dcVal = parseFloat(document.getElementById("DC").value || 0);
+    const rhVal = parseFloat(document.getElementById("weather_rh_pct").value || 0);
+
+    const ffmcPct = Math.max(10, Math.min(99, Math.round(ffmcVal)));
+    const dcPct = Math.max(5, Math.min(99, Math.round(dcVal / 8.0)));
+    const rhPct = Math.max(5, Math.min(99, Math.round(100.0 - rhVal)));
+
+    const ffmcTier = ffmcPct >= 88 ? "Very High" : (ffmcPct >= 75 ? "Moderate" : "Low");
+    const dcTier = dcPct >= 75 ? "Severe Summer Drought" : (dcPct >= 40 ? "Moderate Dryness" : "Moist Soil");
+
+    document.getElementById("ffmcTitle").textContent = `Surface Litter Flammability (Fine Fuel FFMC ${ffmcVal.toFixed(1)})`;
+    document.getElementById("ffmcLabel").textContent = `${ffmcPct}% (${ffmcTier})`;
+    document.getElementById("ffmcBar").style.width = `${ffmcPct}%`;
+
+    document.getElementById("dcTitle").textContent = `Deep Soil Drought Severity (Drought Code DC ${Math.round(dcVal)})`;
+    document.getElementById("dcLabel").textContent = `${dcPct}% (${dcTier})`;
+    document.getElementById("dcBar").style.width = `${dcPct}%`;
+
+    document.getElementById("rhTitle").textContent = `Atmospheric Dryness (Low Humidity Stress: ${rhVal.toFixed(1)}% RH)`;
+    document.getElementById("rhLabel").textContent = `${rhPct}%`;
+    document.getElementById("rhBar").style.width = `${rhPct}%`;
+  }
+
+  function syncWeatherSlider(inputId, sliderId, fromSlider) {
+    const numEl = document.getElementById(inputId);
+    const sliderEl = document.getElementById(sliderId);
+    if (!numEl || !sliderEl) return;
+
+    const val = parseFloat(fromSlider ? sliderEl.value : numEl.value);
+    if (Number.isNaN(val)) return;
+
+    if (fromSlider) {
+      numEl.value = val;
+    } else {
+      const minVal = parseFloat(sliderEl.min);
+      const maxVal = parseFloat(sliderEl.max);
+      sliderEl.value = Math.max(minVal, Math.min(maxVal, val));
+    }
+    if (inputId === "weather_rh_pct") {
+      refreshDrynessIndicators();
+    }
+  }
+
+  // Fill Only (Manual Submit): updates inputs, map pin, dryness bars, and shows status pill
+  function applyScenarioPreset(presetKey) {
+    const preset = SCENARIO_PRESETS[presetKey];
+    if (!preset) return;
+    for (const [field, value] of Object.entries(preset)) {
+      const el = document.getElementById(field);
+      if (el) el.value = value;
+    }
+    syncWeatherSlider("weather_temp_c", "tempSlider", false);
+    syncWeatherSlider("weather_rh_pct", "rhSlider", false);
+    syncWeatherSlider("weather_wind_mps", "windSlider", false);
+    updateMapMarkerFromEtrs(preset.x_etrs89_km, preset.y_etrs89_km, preset.municipality);
+    refreshDrynessIndicators();
+
+    document.querySelectorAll(".preset-chip").forEach(function(chip) {
+      chip.classList.toggle("active", chip.getAttribute("data-preset") === presetKey);
+    });
+    const sb = document.getElementById("sidebarPresetSelect");
+    if (sb) sb.value = presetKey;
+    const lbl = document.getElementById("activePresetLabel");
+    if (lbl) lbl.textContent = preset.preset_label;
+    const notice = document.getElementById("presetStatusNotice");
+    if (notice) notice.style.display = "flex";
+  }
+
+  function updateCoordinatesFromZone(zoneKey) {
+    const zones = {
+      vinhais_west: { x: 82.33, y: 249.58, muni: "Vinhais" },
+      braganca_north: { x: 118.29, y: 240.70, muni: "Bragança" },
+      central_valley: { x: 115.91, y: 248.94, muni: "Bragança" },
+      southeast_border: { x: 131.253, y: 244.850, muni: "Bragança" }
+    };
+    const z = zones[zoneKey];
+    if (!z) return;
+    document.getElementById("x_etrs89_km").value = z.x;
+    document.getElementById("y_etrs89_km").value = z.y;
+    document.getElementById("municipality").value = z.muni;
+    updateMapMarkerFromEtrs(z.x, z.y, z.muni);
+  }
+
+  function updateFwiFromDryness(level) {
+    const levels = {
+      low: { FFMC: 84.5, DMC: 28.0, DC: 140.0, ISI: 3.5, BUI: 35.0, FWI: 8.2, DSR: 1.2 },
+      moderate: { FFMC: 92.2, DMC: 160.3, DC: 714.7, ISI: 12.5, BUI: 205.5, FWI: 44.9, DSR: 22.9 },
+      high: { FFMC: 91.6, DMC: 75.3, DC: 703.8, ISI: 7.5, BUI: 118.8, FWI: 28.0, DSR: 9.9 },
+      extreme: { FFMC: 89.32, DMC: 172.72, DC: 615.17, ISI: 8.88, BUI: 202.97, FWI: 36.05, DSR: 15.50 }
+    };
+    const f = levels[level];
+    if (!f) return;
+    for (const [k, v] of Object.entries(f)) {
+      const el = document.getElementById(k);
+      if (el) el.value = v;
+    }
+    refreshDrynessIndicators();
+  }
+
+  function etrsKmToLatLon(xKm, yKm) {
+    const lon = -8.1331 + (xKm / 83.25);
+    const lat = 39.6683 + (yKm / 111.12);
+    return [lat, lon];
+  }
+
+  function latLonToEtrsKm(lat, lon) {
+    const xKm = (lon - (-8.1331)) * 83.25;
+    const yKm = (lat - 39.6683) * 111.12;
+    return [Math.max(78.0, Math.min(134.0, xKm)), Math.max(235.0, Math.min(257.0, yKm))];
+  }
+
+  let parkMap = null;
+  let fireMarker = null;
+
+  function updateMapMarkerFromEtrs(xKm, yKm, muni) {
+    const [lat, lon] = etrsKmToLatLon(xKm, yKm);
+    if (fireMarker && parkMap) {
+      fireMarker.setLatLng([lat, lon]);
+      parkMap.panTo([lat, lon]);
+    }
+    document.getElementById("coordReadout").innerHTML =
+      `<i class="fa-solid fa-location-dot"></i> ${muni} (${Number(xKm).toFixed(1)}, ${Number(yKm).toFixed(1)} km)`;
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    {% if prediction %}
+    const ctx = document.getElementById("modelBreakdownChart");
+    if (ctx && typeof Chart !== "undefined") {
+      const isDark = document.documentElement.getAttribute("data-bs-theme") !== "light";
+      const tickColor = isDark ? "#cbd5e1" : "#334155";
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["SGIF Blend (80/20)", "Weather Blend (90/10)", "SVR Log Base", "Poisson Tree Tail"],
+          datasets: [{
+            label: "Predicted Area (ha)",
+            data: [
+              {{ prediction.sgif_blend_ha }},
+              {{ prediction.weather_blend_ha }},
+              {{ prediction.sgif_svr_ha }},
+              {{ prediction.sgif_poisson_ha }}
+            ],
+            backgroundColor: ["#22c55e", "#38bdf8", "#94a3b8", "#f97316"],
+            borderRadius: 4
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: tickColor, font: { size: 10 } }, grid: { color: "rgba(148,163,184,0.16)" } },
+            y: { ticks: { color: tickColor, font: { size: 10 } }, grid: { display: false } }
+          }
+        }
+      });
+    }
+    {% endif %}
+
+    const initX = {{ form_data.x_etrs89_km }};
+    const initY = {{ form_data.y_etrs89_km }};
+    const [initLat, initLon] = etrsKmToLatLon(initX, initY);
+
+    parkMap = L.map("parkLeafletMap", { zoomControl: true }).setView([41.89, -6.78], 10);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 15,
+      attribution: "&copy; OpenStreetMap | ICNF PN Montesinho"
+    }).addTo(parkMap);
+
+    fetch("{{ url_for('static', filename='data/montesinho_boundary_wgs84.geojson') }}")
+      .then(function(res) { return res.json(); })
+      .then(function(geoData) {
+        const layer = L.geoJSON(geoData, {
+          style: { color: "#22c55e", weight: 2.5, fillColor: "#1b4332", fillOpacity: 0.32 }
+        }).addTo(parkMap);
+        parkMap.fitBounds(layer.getBounds(), { padding: [12, 12] });
+      });
+
+    fireMarker = L.circleMarker([initLat, initLon], {
+      radius: 8,
+      color: "#ffffff",
+      weight: 2,
+      fillColor: "{{ prediction.risk.hex_color if prediction else '#22c55e' }}",
+      fillOpacity: 0.95
+    }).addTo(parkMap);
+
+    parkMap.on("click", function(e) {
+      const [xKm, yKm] = latLonToEtrsKm(e.latlng.lat, e.latlng.lng);
+      const muni = xKm < 103.0 ? "Vinhais" : "Bragança";
+      fireMarker.setLatLng(e.latlng);
+      document.getElementById("x_etrs89_km").value = xKm.toFixed(2);
+      document.getElementById("y_etrs89_km").value = yKm.toFixed(2);
+      document.getElementById("municipality").value = muni;
+      document.getElementById("coordReadout").innerHTML =
+        `<i class="fa-solid fa-location-dot"></i> ${muni} (${xKm.toFixed(1)}, ${yKm.toFixed(1)} km)`;
+    });
+  });
+</script>
+{% endblock %}

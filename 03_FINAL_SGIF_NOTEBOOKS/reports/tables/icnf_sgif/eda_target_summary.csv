@@ -1,0 +1,16 @@
+metric,value
+records,1644.0
+minimum_ha,0.0
+q1_ha,0.220525
+median_ha,1.0
+mean_ha,9.85643410551048
+q3_ha,4.0
+p90_ha,13.0
+p95_ha,29.31602674408909
+p99_ha,192.81749999999982
+maximum_ha,1057.5
+std_ha,54.96131863569517
+skewness,13.054817414918682
+zero_area_records,19.0
+fires_ge_100ha,31.0
+fires_ge_500ha,5.0

@@ -1,0 +1,9 @@
+feature_set,fire_size_group,records,actual_mean_ha,prediction_mean_ha,mae_ha,median_ae_ha,rmsle
+sgif_only,0 to <1 ha,90,0.269,1.647,1.38,1.143,0.792
+sgif_only,1 to <10 ha,67,3.609,2.49,2.01,1.53,0.607
+sgif_only,10 to <100 ha,25,22.492,3.292,19.2,15.012,1.691
+sgif_only,>=100 ha,5,392.583,3.987,388.596,248.395,4.65
+weather_enriched,0 to <1 ha,90,0.269,1.472,1.203,1.054,0.728
+weather_enriched,1 to <10 ha,67,3.609,2.225,2.11,1.746,0.682
+weather_enriched,10 to <100 ha,25,22.492,3.584,18.908,14.493,1.622
+weather_enriched,>=100 ha,5,392.583,2.042,390.541,247.76,4.894

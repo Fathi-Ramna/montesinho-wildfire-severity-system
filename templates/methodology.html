@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% block title %}How the Model Works & Dataset Evolution | Montesinho Wildfire System{% endblock %}
+
+{% block content %}
+<header class="hero-banner d-flex flex-wrap justify-content-between align-items-center" style="background-image: linear-gradient(90deg, rgba(11, 24, 17, 0.92) 0%, rgba(18, 43, 29, 0.78) 60%, rgba(11, 24, 17, 0.45) 100%), url('{{ url_for('static', filename='images/pine forest mountains.jpg') }}');">
+  <div>
+    <div class="small fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 0.06em;">
+      <i class="fa-solid fa-diagram-project me-1"></i> Modeling Architecture &amp; Protected Test Audit
+    </div>
+    <h1 class="h4 fw-bold mb-1">How the Hybrid SVR + Poisson Ensemble Works &amp; Dataset Evolution</h1>
+    <p class="small text-light opacity-75 mb-0">
+      Leakage-free chronological training (2004-2017), validation selection (2018-2021), one-time test evaluation (2022-2025), and UCI vs. SGIF comparison.
+    </p>
+  </div>
+  <div class="text-md-end mt-3 mt-md-0">
+    <div class="small text-light opacity-75">Primary Selected Model</div>
+    <div class="fw-bold text-warning">80% RBF SVR + 20% Poisson HistGBR</div>
+  </div>
+</header>
+
+<!-- Row 1: Architecture & Mathematical Rationale Cards -->
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">1. Leakage-Free Preprocessing Pipeline</div>
+      <h2 class="h6 fw-bold mb-2">Chronological Splits &amp; Causal Weather Alignment</h2>
+      <div class="advisory-item">
+        <i class="fa-solid fa-calendar-check text-success mt-1"></i>
+        <div>
+          <strong>Strict Out-of-Time Partitioning:</strong>
+          Trained strictly on <code>2004-2017</code> (<code>1,250</code> fires), tuned on <code>2018-2021</code> Validation (<code>207</code> fires), and evaluated once on <code>2022-2025</code> Protected Test (<code>187</code> fires).
+        </div>
+      </div>
+      <div class="advisory-item">
+        <i class="fa-solid fa-clock text-warning mt-1"></i>
+        <div>
+          <strong>Causal UTC Weather Join (<code>floor - 1h</code>):</strong>
+          Local <code>Europe/Lisbon</code> alert timestamps are converted to UTC and matched to the most recent <em>fully completed</em> NASA POWER hour prior to ignition.
+        </div>
+      </div>
+      <div class="advisory-item">
+        <i class="fa-solid fa-scale-balanced text-info mt-1"></i>
+        <div>
+          <strong>Training-Only Z-Score Standardization:</strong>
+          Imputation medians, means, and standard deviations are computed strictly on the <code>1,250</code> training rows (<code>preprocessing_training_statistics.csv</code>).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">2. Hybrid Ensemble Formulation</div>
+      <h2 class="h6 fw-bold mb-2">Overcoming Jensen's Inequality &amp; Log-Back-Transform Bias</h2>
+      <div class="advisory-item">
+        <i class="fa-solid fa-square-root-variable text-warning mt-1"></i>
+        <div>
+          <strong>Why Pure Log-Target Models Underpredict Large Fires:</strong>
+          Fitting solely to <code>log1p(AreaTotal_ha)</code> estimates the conditional geometric mean. By <em>Jensen's inequality</em>, <code>E[expm1(Y)] &gt; expm1(E[Y])</code>, compressing extreme predictions below <code>8 ha</code>.
+        </div>
+      </div>
+      <div class="advisory-item">
+        <i class="fa-solid fa-code-merge text-success mt-1"></i>
+        <div>
+          <strong>80% Log-Space SVR + 20% Raw-Space Poisson HistGBR:</strong>
+          Combining <code>0.80 * expm1(SVR_log) + 0.20 * Poisson_raw</code> preserves high precision on routine small fires while capturing upper-tail drought escalation.
+        </div>
+      </div>
+      <div class="advisory-item">
+        <i class="fa-solid fa-satellite-dish text-info mt-1"></i>
+        <div>
+          <strong>Why SGIF-Only (18 Features) Beats Weather-Enriched (23 Features):</strong>
+          Local FWI sub-indices (<code>FFMC</code>, <code>DMC</code>, <code>DC</code>, <code>ISI</code>, <code>BUI</code>, <code>FWI</code>, <code>DSR</code>) already integrate surface weather, whereas macro-scale <code>0.5&deg; &times; 0.625&deg;</code> MERRA-2 grids add collinearity.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 2: Validation & Protected Test Evaluation Visuals -->
+<div class="row g-4 mb-4">
+  <div class="col-md-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Validation Selection (2018-2021, n = 207)</div>
+      <h2 class="h6 fw-bold mb-2">Best Validation RMSLE Within Each Model Family</h2>
+      <img src="{{ url_for('static', filename='figures/model_validation_family_rmsle.png') }}" class="chart-img" alt="Validation Family RMSLE">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Protected Test Evaluation (2022-2025, n = 187)</div>
+      <h2 class="h6 fw-bold mb-2">Final Test RMSLE: Frozen Candidates vs. Baselines</h2>
+      <img src="{{ url_for('static', filename='figures/model_final_test_rmsle.png') }}" class="chart-img" alt="Final Test RMSLE">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Log-Space Calibration</div>
+      <h2 class="h6 fw-bold mb-2">Predicted vs. Actual Test Burned Area (<code>log1p</code> Scale)</h2>
+      <img src="{{ url_for('static', filename='figures/model_test_scatter_sgif_only.png') }}" class="chart-img" alt="Test Scatter SGIF Only">
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="bento-card h-100">
+      <div class="card-overline">Tail Error Stratification</div>
+      <h2 class="h6 fw-bold mb-2">Final Test MAE by Actual Fire-Size Group</h2>
+      <img src="{{ url_for('static', filename='figures/model_test_mae_by_fire_size.png') }}" class="chart-img" alt="Test MAE by Fire Size">
+    </div>
+  </div>
+</div>
+
+<!-- Row 3: Protected Final Test Metrics Leaderboard Table -->
+<div class="bento-card mb-4">
+  <div class="card-overline">One-Time Protected Test Benchmark</div>
+  <h2 class="h6 fw-bold mb-3">Protected Final-Test Performance Summary (2022-2025, n = 187 Wildfires)</h2>
+  <div class="table-responsive">
+    <table class="table table-sm table-hover align-middle mb-0">
+      <thead>
+        <tr class="text-secondary small">
+          <th>Feature Set</th>
+          <th>Model Family</th>
+          <th>Pre-Test Role</th>
+          <th>RMSLE (Primary)</th>
+          <th>MAE (ha)</th>
+          <th>RMSE (ha)</th>
+          <th>Median AE (ha)</th>
+          <th>R&sup2; (log)</th>
+          <th>Large-Fire MAE (&ge;100 ha)</th>
+          <th>Max Pred (ha)</th>
+        </tr>
+      </thead>
+      <tbody class="small">
+        {% for row in final_test_metrics %}
+        <tr {% if row.selected_before_test %}class="fw-semibold"{% endif %}>
+          <td><code>{{ row.feature_set }}</code></td>
+          <td>{{ row.model_family }}</td>
+          <td>
+            {% if row.selected_before_test %}
+            <span class="badge bg-success">Primary Recommended</span>
+            {% else %}
+            <span class="badge bg-secondary">Benchmark</span>
+            {% endif %}
+          </td>
+          <td class="fw-bold text-warning">{{ "%.3f"|format(row.rmsle) }}</td>
+          <td>{{ "%.3f"|format(row.mae_ha) }}</td>
+          <td>{{ "%.3f"|format(row.rmse_ha) }}</td>
+          <td>{{ "%.3f"|format(row.median_ae_ha) }}</td>
+          <td>{{ "%.3f"|format(row.r2_log) }}</td>
+          <td>{{ "%.3f"|format(row.large_fire_mae_ha) }}</td>
+          <td>{{ "%.3f"|format(row.prediction_max_ha) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Row 4: Dataset Amendment Comparison Table -->
+<div class="bento-card">
+  <div class="card-overline">Methodological Evolution</div>
+  <h2 class="h6 fw-bold mb-3">Formal Comparison: Legacy UCI Benchmark (2000-2003) vs. Official ICNF SGIF Cohort (2004-2025)</h2>
+  <div class="table-responsive">
+    <table class="table table-sm table-hover align-middle mb-0">
+      <thead>
+        <tr class="text-secondary small">
+          <th>Comparison Dimension</th>
+          <th>Original UCI Benchmark (Cortez &amp; Morais, 2007)</th>
+          <th>Amended Official ICNF SGIF Montesinho Cohort</th>
+        </tr>
+      </thead>
+      <tbody class="small">
+        {% for row in dataset_amendment %}
+        <tr>
+          <td class="fw-semibold">{{ row['Dimension'] }}</td>
+          <td class="text-secondary">{{ row['Original UCI Benchmark (Cortez & Morais, 2007)'] }}</td>
+          <td>{{ row['Amended Official ICNF SGIF Cohort'] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

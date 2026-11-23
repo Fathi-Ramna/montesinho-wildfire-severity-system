@@ -1,0 +1,10 @@
+Dimension,"Original UCI Benchmark (Cortez & Morais, 2007)",Amended Official ICNF SGIF Cohort
+Primary data source,Legacy UCI Forest Fires CSV (2000-2003),Official ICNF SGIF registry + PN Montesinho boundary + NASA POWER
+Temporal coverage,January 2000 to December 2003 (4 years),2004 to 2025 (22 years; chronological Train/Val/Test split)
+Cleaned sample size,513 records (after removing 4 exact duplicates from 517),"1,644 official-boundary records (Train: 1,250 | Val: 207 | Test: 187)"
+Zero burned-area share,244 zero-area rows (47.56% of cleaned dataset),19 recorded zero-area micro-fires (1.16% of official cohort)
+Large wildfire events (>= 100 ha),"11 events (max 1,090.84 ha)","31 events (max 1,057.50 ha; 22 Train / 4 Val / 5 Test)"
+Spatial localization,"Coarse 9x9 grid indices (X, Y from 1 to 9)",Exact ETRS89 / PT-TM06 kilometric coordinates + Bragança/Vinhais flag
+Temporal predictors,Categorical month and day-of-week strings only,"Cyclical month, day-of-year, and alert-hour sine/cosine + weekend flag"
+Meteorological & FWI features,"4 FWI indices (FFMC, DMC, DC, ISI) + 4 station weather vars","All 7 FWI components (FFMC, DMC, DC, ISI, BUI, FWI, DSR) + causal NASA POWER"
+Out-of-sample predictive signal,No model beat constant baselines (Repeated-CV MAE 11.62 vs 11.73 ha),SGIF-only blend beats baselines on Val (RMSLE 1.051 vs 1.147) & Test (1.181 vs 1.282)

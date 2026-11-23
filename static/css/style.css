@@ -1,0 +1,471 @@
+:root {
+  --bg-app: #0f141c;
+  --bg-sidebar: #121824;
+  --bg-card: #18212f;
+  --bg-input: #111823;
+  --bg-chip: #1e293b;
+  --border-subtle: #2a384e;
+  --border-input: #364863;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --accent-primary: #f97316;
+  --accent-blue: #38bdf8;
+}
+
+[data-bs-theme="light"] {
+  --bg-app: #e2e8f0;
+  --bg-sidebar: #141c2b;
+  --bg-card: #ffffff;
+  --bg-input: #f1f5f9;
+  --bg-chip: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --border-input: #94a3b8;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --accent-primary: #ea580c;
+  --accent-blue: #0284c7;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* App Shell Layout */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  align-items: flex-start;
+}
+
+/* Sticky Full-Height Left Sidebar */
+.sidebar {
+  width: 276px;
+  flex-shrink: 0;
+  background-color: var(--bg-sidebar);
+  color: #f8fafc;
+  border-right: 1px solid #222e42;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1020;
+}
+
+/* Sidebar Visual Photo Header */
+.sidebar-photo-card {
+  position: relative;
+  height: 156px;
+  background-size: cover;
+  background-position: center 28%;
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-bottom: 1px solid #222e42;
+}
+
+.nav-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  padding: 1.2rem 1.35rem 0.45rem;
+}
+
+.sidebar-nav .nav-link {
+  color: #cbd5e1;
+  font-size: 0.92rem;
+  font-weight: 500;
+  padding: 0.72rem 1.25rem;
+  margin: 0.2rem 0.8rem;
+  border-radius: 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.15s ease;
+}
+
+.sidebar-nav .nav-link i {
+  width: 20px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.sidebar-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+.sidebar-nav .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.11);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Spacious Full-Width Main Content Area */
+.main-area {
+  flex-grow: 1;
+  padding: 1.75rem 2.25rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Scenic Hero Banner with Local Forest Image */
+.hero-banner {
+  position: relative;
+  border-radius: 0.95rem;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center 30%;
+  border: 1.5px solid var(--border-subtle);
+  padding: 1.85rem 2.1rem;
+  color: #ffffff;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Breathable Bento Cards */
+.bento-card {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 0.95rem;
+  padding: 1.65rem 1.85rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14);
+}
+
+[data-bs-theme="light"] .bento-card {
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.bento-card .form-control,
+.bento-card .form-select,
+.bento-card .input-group-text {
+  background-color: var(--bg-card);
+  border: 1.5px solid var(--border-input);
+  color: var(--text-main);
+}
+
+.bento-card .form-control:focus,
+.bento-card .form-select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 0.2rem rgba(249, 115, 22, 0.18);
+}
+
+.value-pill {
+  background-color: var(--bg-chip);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+  padding: 0.28rem 0.65rem;
+  border-radius: 0.45rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* High-Contrast Semantic Accents in Light Mode */
+[data-bs-theme="light"] .bento-card .text-warning {
+  color: #b45309 !important;
+}
+
+[data-bs-theme="light"] .bento-card .text-info {
+  color: #0369a1 !important;
+}
+
+[data-bs-theme="light"] .bento-card .text-primary {
+  color: #1d4ed8 !important;
+}
+
+[data-bs-theme="light"] .bento-card .text-success {
+  color: #15803d !important;
+}
+
+[data-bs-theme="light"] .bento-card .text-danger {
+  color: #b91c1c !important;
+}
+
+[data-bs-theme="light"] .bento-card .text-secondary {
+  color: var(--text-muted) !important;
+}
+
+.card-overline {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.pred-hero-value {
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+/* Neutral Initial State Card */
+.ready-state-card {
+  border-style: dashed;
+  border-width: 1.5px;
+  border-color: var(--border-input);
+}
+
+.ready-step-box {
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 0.7rem;
+  padding: 0.95rem 1.1rem;
+  height: 100%;
+}
+
+/* 4-Zone Visual Severity Bar */
+.severity-bar-track {
+  height: 13px;
+  border-radius: 7px;
+  background: linear-gradient(90deg,
+    #22c55e 0%, #22c55e 25%,
+    #eab308 25%, #eab308 55%,
+    #f97316 55%, #f97316 82%,
+    #ef4444 82%, #ef4444 100%);
+  position: relative;
+  margin: 1.25rem 0 0.55rem;
+}
+
+.severity-marker {
+  position: absolute;
+  top: -5px;
+  width: 22px;
+  height: 22px;
+  background: #ffffff;
+  border: 4px solid #0f172a;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  transition: left 0.25s ease;
+}
+
+/* Interactive Leaflet Map Canvas */
+.map-canvas {
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 0.75rem;
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+/* Spacious Advisory List with Unboxed Icons */
+.advisory-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.advisory-item:last-child {
+  border-bottom: none;
+}
+
+/* Ranger Thumbnail Banner inside Advisory Card */
+.ranger-strip {
+  height: 92px;
+  border-radius: 0.65rem;
+  background-size: cover;
+  background-position: center 22%;
+  display: flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  color: #f8fafc;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.progress-thin {
+  height: 9px;
+  border-radius: 5px;
+  background-color: rgba(100, 116, 139, 0.24);
+}
+
+.chart-img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  border: 1.5px solid var(--border-subtle);
+  background: #ffffff;
+  padding: 0.5rem;
+}
+
+.bento-card .table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-main);
+  --bs-table-border-color: var(--border-subtle);
+  --bs-table-hover-color: var(--text-main);
+  --bs-table-hover-bg: rgba(249, 115, 22, 0.06);
+}
+
+.table > :not(caption) > * > * {
+  padding: 0.7rem 0.85rem;
+}
+
+.badge.bg-orange {
+  background-color: #f97316 !important;
+  color: #ffffff !important;
+}
+
+.footer-bar {
+  border-top: 1.5px solid var(--border-subtle);
+  padding-top: 1.25rem;
+  margin-top: 2.25rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Tactile Form Controls for Step 1 Card */
+.preset-chip-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.15rem;
+}
+
+.preset-chip {
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-subtle);
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 0.38rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.preset-chip:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-1px);
+}
+
+.preset-chip.active {
+  background-color: rgba(249, 115, 22, 0.14);
+  border-color: var(--accent-primary);
+  color: var(--text-main);
+  box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.25);
+}
+
+.chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.weather-control-box {
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 0.65rem;
+  padding: 0.75rem 0.9rem;
+  height: 100%;
+}
+
+.weather-control-box .form-range::-webkit-slider-runnable-track {
+  background-color: var(--border-subtle);
+  height: 6px;
+  border-radius: 3px;
+}
+
+.weather-control-box .form-range::-moz-range-track {
+  background-color: var(--border-subtle);
+  height: 6px;
+  border-radius: 3px;
+}
+
+.weather-control-box .form-range::-webkit-slider-thumb {
+  background-color: var(--accent-blue);
+  margin-top: -5px;
+}
+
+.weather-control-box .form-range::-moz-range-thumb {
+  background-color: var(--accent-blue);
+}
+
+.weather-num-input {
+  width: 68px !important;
+  flex: 0 0 68px !important;
+  text-align: right;
+  font-weight: 600;
+}
+
+.expert-drawer-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: var(--bg-input);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 0.6rem;
+  padding: 0.65rem 1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.expert-drawer-toggle:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-main);
+}
+
+.btn-assess {
+  background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+  border: 1px solid #f97316;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  border-radius: 0.65rem;
+  padding: 0.8rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+  transition: all 0.15s ease;
+}
+
+.btn-assess:hover {
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(249, 115, 22, 0.34);
+}
+
+@media (max-width: 991.98px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid #222e42;
+  }
+  .main-area {
+    padding: 1.25rem;
+  }
+}

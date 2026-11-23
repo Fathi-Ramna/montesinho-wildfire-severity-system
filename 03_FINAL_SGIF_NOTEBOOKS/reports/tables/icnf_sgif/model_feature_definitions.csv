@@ -1,0 +1,12 @@
+feature,group,definition,known_at_prediction,feature_set
+month_sin/month_cos,Calendar,Cyclic alert month,Yes,Both
+doy_sin/doy_cos,Calendar,Cyclic day of year,Yes,Both
+hour_sin/hour_cos,Calendar,Cyclic local alert time,Yes,Both
+is_weekend,Calendar,Weekend indicator,Yes,Both
+municipality_vinhais,Location,Vinhais versus Braganca municipality,Yes,Both
+x_etrs89_km/y_etrs89_km,Location,Projected ignition coordinates in kilometres,Yes,Both
+"FFMC, DMC, DC, ISI, BUI, FWI, DSR",Fire weather indices,SGIF FWI-family values,Yes,Both
+weather_temp_c,Direct weather,Last completed-hour temperature,Yes,Enriched only
+weather_rh_pct,Direct weather,Last completed-hour relative humidity,Yes,Enriched only
+weather_wind_mps,Direct weather,Last completed-hour wind speed,Yes,Enriched only
+weather_rain_prev_24h_log1p,Direct weather,log1p of rain over preceding 24 completed hours; application input remains raw mm,Yes,Enriched only

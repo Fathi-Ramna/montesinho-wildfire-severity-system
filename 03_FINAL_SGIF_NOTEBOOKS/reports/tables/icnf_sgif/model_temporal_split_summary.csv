@@ -1,0 +1,4 @@
+split,records,first_year,last_year,median_area_ha,mean_area_ha,maximum_area_ha,fires_ge_100ha,weather_missing_records,fwi_missing_records
+train,1250,2004,2017,1.0,8.90218648,829.75,22,0,1
+validation,207,2018,2021,1.0,11.03863661835749,1057.5,4,0,1
+test,187,2022,2025,1.08034589920044,14.92645341956807,924.495,5,0,1

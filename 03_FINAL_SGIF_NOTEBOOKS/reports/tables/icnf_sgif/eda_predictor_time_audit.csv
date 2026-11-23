@@ -1,0 +1,8 @@
+feature_group,examples,decision,reason
+Calendar fields,"Ano, Mes, Dia, Hora",Candidate,Known at alert time; encode cyclically where appropriate.
+Location,"X_ETRS89, Y_ETRS89, Concelho/Freguesia",Candidate,Known at alert time; test robust spatial encoding.
+FWI family,"FFMC, DMC, DC, ISI, BUI, FWI, DSR",Candidate,Available for nearly all events; three rows need an explicit missing-data rule.
+Direct weather,"temperature, RH, wind, rain",Requires join,Absent from SGIF; obtain from a documented historical weather source.
+Cause,"CodCausa, TipoCausa, GrupoCausa, DescricaoCausa",Exclude by default,Often assigned after investigation and 36.44% missing at group level.
+Response/outcome,"first intervention, extinction, duration, area components, class",Exclude,Known during/after the fire and directly leaks the final outcome.
+Source/audit,"workbook, sheet, row, quality flags",Exclude,"Provenance fields, not physical prediction inputs."

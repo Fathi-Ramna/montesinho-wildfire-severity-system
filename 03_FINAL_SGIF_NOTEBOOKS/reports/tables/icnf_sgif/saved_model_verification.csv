@@ -1,0 +1,4 @@
+artifact_file,feature_set,feature_count,svr_weight,poisson_weight,validation_rmsle,test_rmsle,test_mae_ha
+models/sgif_only_final_blend.joblib,sgif_only,18,0.8,0.2,1.051,1.181,14.341
+models/weather_enriched_final_blend.joblib,weather_enriched,23,0.9,0.1,1.091,1.189,14.305
+models/final_recommended_model.joblib,sgif_only,18,0.8,0.2,1.051,1.181,14.341

@@ -1,0 +1,5 @@
+split,feature_set,model_family,candidate_id,selected_before_test,mae_ha,rmse_ha,median_ae_ha,rmsle,bias_ha,r2_raw,r2_log,large_fire_count,large_fire_mae_ha,prediction_min_ha,prediction_median_ha,prediction_mean_ha,prediction_max_ha
+test,sgif_only,SVR + Poisson blend,sgif_only__blend__w0.8,True,14.341,78.803,1.511,1.181,-12.695,-0.008,0.143,5,388.596,0.023,1.801,2.231,14.112
+test,weather_enriched,SVR + Poisson blend,weather_enriched__blend__w0.9,False,14.305,79.292,1.503,1.189,-12.887,-0.021,0.131,5,390.541,0.061,1.715,2.039,7.43
+test,baseline,Log-mean baseline,baseline__log_mean,False,14.694,79.565,1.749,1.282,-13.077,-0.028,-0.01,5,390.733,1.849,1.849,1.849,1.849
+test,baseline,Median baseline,baseline__median,False,14.63,79.709,0.97,1.363,-13.926,-0.031,-0.141,5,391.583,1.0,1.0,1.0,1.0

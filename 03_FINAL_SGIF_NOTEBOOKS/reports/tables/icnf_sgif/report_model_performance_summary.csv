@@ -1,0 +1,5 @@
+Evaluation Split,Candidate Model,Feature Count,MAE (ha),RMSE (ha),Median AE (ha),RMSLE,R2 (log),Large-Fire MAE >=100 ha (ha),Max Prediction (ha)
+Validation (2018-2021),SGIF-only SVR + Poisson blend (80% / 20%),18,10.535,75.372,1.26,1.051,0.16,349.801,30.462
+Validation (2018-2021),Weather-enriched SVR + Poisson blend (90% / 10%),23,10.789,75.395,1.257,1.091,0.095,349.18,11.943
+Protected Test (2022-2025),SGIF-only SVR + Poisson blend (Recommended),18,14.341,78.803,1.511,1.181,0.143,388.596,14.112
+Protected Test (2022-2025),Weather-enriched SVR + Poisson blend,23,14.305,79.292,1.503,1.189,0.131,390.541,7.43

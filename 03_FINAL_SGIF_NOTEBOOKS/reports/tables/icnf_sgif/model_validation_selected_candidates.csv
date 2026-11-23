@@ -1,0 +1,3 @@
+selection_role,feature_set,model_family,candidate_id,blend_weights,mae_ha,rmse_ha,median_ae_ha,rmsle,bias_ha,r2_raw,r2_log,large_fire_count,large_fire_mae_ha,prediction_max_ha
+primary_selected_candidate,sgif_only,SVR + Poisson blend,sgif_only__blend__w0.8,80% SVR log-target + 20% Poisson HistGBR,10.535,75.372,1.26,1.051,-8.515,-0.012,0.16,4,349.801,30.462
+weather_comparison_candidate,weather_enriched,SVR + Poisson blend,weather_enriched__blend__w0.9,90% SVR log-target + 10% Poisson HistGBR,10.789,75.395,1.257,1.091,-9.112,-0.013,0.095,4,349.18,11.943

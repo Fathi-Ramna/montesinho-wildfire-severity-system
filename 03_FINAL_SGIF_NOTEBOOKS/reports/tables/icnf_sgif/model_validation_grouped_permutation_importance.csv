@@ -1,0 +1,13 @@
+feature_group,features,rmsle_increase_mean,rmsle_increase_std,mae_increase_ha_mean
+Map location,"x_etrs89_km, y_etrs89_km",0.074,0.02,0.284
+Day of year,"doy_sin, doy_cos",0.041,0.021,0.127
+Alert hour,"hour_sin, hour_cos",0.037,0.016,0.203
+DC,DC,0.024,0.011,0.149
+DMC,DMC,0.013,0.007,0.022
+FFMC,FFMC,0.004,0.009,0.061
+ISI,ISI,0.003,0.01,0.073
+FWI,FWI,0.003,0.01,-0.004
+Weekend,is_weekend,0.003,0.006,0.003
+Municipality,municipality_vinhais,0.003,0.006,-0.014
+BUI,BUI,0.002,0.006,0.011
+Month,"month_sin, month_cos",0.002,0.008,0.015

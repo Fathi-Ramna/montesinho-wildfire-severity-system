@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Scenario History Log | Montesinho Wildfire System{% endblock %}
+
+{% block content %}
+<header class="hero-banner d-flex flex-wrap justify-content-between align-items-center" style="background-image: linear-gradient(90deg, rgba(11, 24, 17, 0.92) 0%, rgba(18, 43, 29, 0.78) 60%, rgba(11, 24, 17, 0.45) 100%), url('{{ url_for('static', filename='images/pine forest mountains.jpg') }}');">
+  <div>
+    <div class="small fw-bold text-warning text-uppercase mb-1" style="letter-spacing: 0.06em;">
+      <i class="fa-solid fa-clock-rotate-left me-1"></i> Audit Trail &amp; CSV Export
+    </div>
+    <h1 class="h4 fw-bold mb-1">Session Scenario History Log</h1>
+    <p class="small text-light opacity-75 mb-0">
+      Persists the 25 most recent wildfire scenario runs evaluated through the predictor (<code>prediction_history.json</code>) with one-click CSV export.
+    </p>
+  </div>
+  <div class="d-flex gap-2 mt-3 mt-md-0">
+    <a href="{{ url_for('export_history') }}" class="btn btn-primary btn-sm fw-semibold">
+      <i class="fa-solid fa-file-csv me-1"></i> Download History CSV
+    </a>
+    <form method="POST" action="{{ url_for('clear_history') }}" class="d-inline">
+      <button type="submit" class="btn btn-outline-danger btn-sm fw-semibold">
+        <i class="fa-solid fa-trash-can me-1"></i> Clear History Log
+      </button>
+    </form>
+  </div>
+</header>
+
+<div class="bento-card">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <div class="card-overline">Logged Scenarios ({{ history|length }} / 25 Max)</div>
+      <h2 class="h6 fw-bold mb-0">Side-by-Side Comparison of Tested Ignition Conditions</h2>
+    </div>
+    <a href="{{ url_for('index') }}" class="btn btn-outline-primary btn-sm fw-semibold">
+      <i class="fa-solid fa-plus me-1"></i> Run New Scenario
+    </a>
+  </div>
+
+  {% if history %}
+  <div class="table-responsive">
+    <table class="table table-sm table-hover align-middle mb-0">
+      <thead>
+        <tr class="text-secondary small">
+          <th>Tested At</th>
+          <th>Alert Date &amp; Hour</th>
+          <th>Municipality &amp; ETRS89 (km)</th>
+          <th>Meteorology (T / RH / Wind / Rain)</th>
+          <th>FWI Summary</th>
+          <th>SGIF-Only Blend (ha)</th>
+          <th>Weather-Enriched (ha)</th>
+          <th>Risk Alert Tier</th>
+        </tr>
+      </thead>
+      <tbody class="small">
+        {% for item in history %}
+        <tr>
+          <td class="text-secondary">{{ item.timestamp }}</td>
+          <td class="fw-semibold">{{ item.alert_date }} {{ item.alert_hour }}</td>
+          <td>{{ item.municipality }} <span class="text-secondary">{{ item.coords }}</span></td>
+          <td>{{ item.weather_summary }}</td>
+          <td><code>{{ item.fwi_summary }}</code></td>
+          <td class="fw-bold">{{ "%.2f"|format(item.sgif_blend_ha) }} ha</td>
+          <td>{{ "%.2f"|format(item.weather_blend_ha) }} ha</td>
+          <td>
+            <span class="badge rounded-pill px-2 py-1" style="background-color: {{ item.hex_color|default('#22c55e') }} !important; color: {% if item.badge_label == 'MODERATE RISK' %}#0f172a{% else %}#ffffff{% endif %} !important;">
+              {{ item.badge_label }}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="p-4 text-center text-secondary">
+    <i class="fa-solid fa-clipboard-list fs-3 mb-2 d-block text-success"></i>
+    No scenario tests are currently stored in <code>prediction_history.json</code>.
+    Return to the <a href="{{ url_for('index') }}" class="text-success fw-semibold">Severity Predictor</a> and submit a scenario or preset to log runs here.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

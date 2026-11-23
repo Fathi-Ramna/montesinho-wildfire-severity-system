@@ -1,0 +1,13 @@
+{
+  "selection_protocol": "Chronological validation split (2018-2021, 207 fires) fitted strictly on 2004-2017 training data (1,250 fires)",
+  "primary_metric": "RMSLE",
+  "secondary_metrics": [
+    "mae_ha",
+    "rmse_ha",
+    "median_ae_ha",
+    "large_fire_mae_ha"
+  ],
+  "selected_primary_candidate": "sgif_only__blend__w0.8",
+  "selected_weather_candidate": "weather_enriched__blend__w0.9",
+  "recommended_before_test": "sgif_only"
+}

@@ -1,0 +1,6 @@
+fields,reason,decision
+"AreaPov_ha, AreaMato_ha, AreaAgric_ha, ClasseArea",Final outcome components/classes,Excluded
+"DataHora_PrimeiraIntervencao, DataHora_Extincao, Duracao_Horas",Response/outcome timing after alert,Excluded
+"CodCausa, TipoCausa, GrupoCausa, DescricaoCausa",Usually assigned after investigation,Excluded
+IncSup24horas,Post-event status,Excluded
+Source workbook/sheet/row and audit flags,Provenance rather than physical inputs,Excluded

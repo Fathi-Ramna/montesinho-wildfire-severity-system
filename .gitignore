@@ -1,0 +1,20 @@
+# Python virtual environment and cache
+.venv/
+.venv_old/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Local runtime history file
+prediction_history.json
+
+# Large raw archives and spreadsheets (documented in README.md)
+03_FINAL_SGIF_NOTEBOOKS/Dataset/icnf_sgif/archives/
+03_FINAL_SGIF_NOTEBOOKS/Dataset/icnf_sgif/extracted/
+03_FINAL_SGIF_NOTEBOOKS/Dataset/nasa_power_hourly/
+*.xlsx
+*.zip
+
+# OS junk files
+.DS_Store
+Thumbs.db

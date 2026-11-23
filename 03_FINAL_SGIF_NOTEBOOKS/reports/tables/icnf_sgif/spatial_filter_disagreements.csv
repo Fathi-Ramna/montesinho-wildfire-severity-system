@@ -1,0 +1,5 @@
+Codigo_SGIF,Ano,RNAP,X_ETRS89,Y_ETRS89,agreement_group,distance_to_boundary_m,source_workbook,source_excel_row
+TM21664,2016,,127071.685938315,240153.071437575,geometry_only,646.9,Registos_Incendios_SGIF_2011_2020.xlsx,109004
+TM220227,2020,Montesinho,97912.3591492741,255083.683115298,tag_only,0.2,Registos_Incendios_SGIF_2011_2020.xlsx,172519
+2022_04_0009918,2022,,101673.464975514,246734.073780207,geometry_only,4478.01,Registos_Incendios_SGIF_2021_2025.xlsx,10463
+20240918936,2024,,119493.023779049,238764.875885033,geometry_only,146.02,Registos_Incendios_SGIF_2021_2025.xlsx,28546

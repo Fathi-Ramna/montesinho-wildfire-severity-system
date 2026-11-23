@@ -1,0 +1,25 @@
+split,feature_set,model_family,candidate_id,parameters,mae_ha,rmse_ha,median_ae_ha,rmsle,bias_ha,r2_raw,r2_log,large_fire_count,large_fire_mae_ha,prediction_min_ha,prediction_median_ha,prediction_mean_ha,prediction_max_ha
+validation,sgif_only,SVR + Poisson blend,sgif_only__blend__w0.8,"{""poisson_weight"": 0.2, ""svr_weight"": 0.8}",10.535,75.372,1.26,1.051,-8.515,-0.012,0.16,4,349.801,0.02,1.393,2.644,30.462
+validation,sgif_only,Ridge log-target,sgif_only__ridge_log__05,"{""alpha"": 100.0}",10.712,75.383,1.448,1.073,-9.051,-0.012,0.125,4,351.84,0.44,1.771,1.988,6.453
+validation,sgif_only,Ridge log-target,sgif_only__ridge_log__04,"{""alpha"": 50.0}",10.716,75.379,1.448,1.075,-8.899,-0.013,0.122,4,351.285,0.051,1.893,2.14,5.878
+validation,sgif_only,Ridge log-target,sgif_only__ridge_log__03,"{""alpha"": 10.0}",10.725,75.384,1.44,1.078,-8.897,-0.013,0.116,4,351.316,0.0,1.857,2.142,6.384
+validation,sgif_only,Ridge log-target,sgif_only__ridge_log__02,"{""alpha"": 1.0}",10.732,75.383,1.481,1.079,-8.894,-0.013,0.114,4,351.33,0.0,1.86,2.145,6.681
+validation,sgif_only,Ridge log-target,sgif_only__ridge_log__01,"{""alpha"": 0.1}",10.734,75.383,1.472,1.079,-8.893,-0.013,0.114,4,351.333,0.0,1.859,2.146,6.736
+validation,sgif_only,SVR log-target,sgif_only__svr_rbf_log__14,"{""C"": 1.0, ""epsilon"": 0.05, ""gamma"": 0.02}",10.742,75.43,1.321,1.085,-9.237,-0.014,0.106,4,352.342,0.258,1.622,1.802,7.567
+validation,sgif_only,Histogram boosting log-target,sgif_only__hgb_log__03,"{""l2_regularization"": 10.0, ""learning_rate"": 0.03, ""max_depth"": 3, ""max_iter"": 100, ""min_samples_leaf"": 30}",10.804,75.409,1.545,1.114,-8.986,-0.013,0.057,4,351.519,0.562,1.889,2.053,6.469
+validation,sgif_only,Log-mean baseline,sgif_only__baseline_log_mean,"{""constant_prediction_ha"": 1.849}",10.862,75.469,1.659,1.147,-9.19,-0.015,0.0,4,352.114,1.849,1.849,1.849,1.849
+validation,sgif_only,Histogram boosting Poisson,sgif_only__hgb_poisson__08,"{""l2_regularization"": 10.0, ""learning_rate"": 0.1, ""max_depth"": 8, ""max_iter"": 120, ""min_samples_leaf"": 15}",11.428,75.195,1.912,1.168,-5.627,-0.007,-0.036,4,339.637,0.184,2.41,5.412,152.31
+validation,sgif_only,Median baseline,sgif_only__baseline_median,"{""constant_prediction_ha"": 1.0}",10.729,75.578,0.92,1.2,-10.039,-0.018,-0.096,4,352.963,1.0,1.0,1.0,1.0
+validation,sgif_only,Tweedie,sgif_only__tweedie__09,"{""alpha"": 0.1, ""power"": 1.9}",14.371,75.158,5.016,1.509,-2.735,-0.006,-0.733,4,343.303,0.452,5.864,8.304,64.918
+validation,weather_enriched,SVR + Poisson blend,weather_enriched__blend__w0.9,"{""poisson_weight"": 0.1, ""svr_weight"": 0.9}",10.789,75.395,1.257,1.091,-9.112,-0.013,0.095,4,349.18,0.02,1.267,1.939,11.943
+validation,weather_enriched,Ridge log-target,weather_enriched__ridge_log__05,"{""alpha"": 100.0}",10.848,75.394,1.486,1.1,-9.007,-0.013,0.08,4,351.805,0.369,1.802,2.032,7.425
+validation,weather_enriched,SVR log-target,weather_enriched__svr_rbf_log__06,"{""C"": 0.25, ""epsilon"": 0.1, ""gamma"": 0.05}",10.802,75.448,1.309,1.101,-9.418,-0.014,0.078,4,352.49,0.412,1.554,1.621,5.918
+validation,weather_enriched,Ridge log-target,weather_enriched__ridge_log__04,"{""alpha"": 50.0}",10.873,75.397,1.526,1.106,-8.682,-0.013,0.07,4,350.89,0.0,1.93,2.356,11.205
+validation,weather_enriched,Ridge log-target,weather_enriched__ridge_log__03,"{""alpha"": 10.0}",10.91,75.404,1.543,1.113,-8.644,-0.013,0.058,4,350.806,0.0,1.832,2.395,12.682
+validation,weather_enriched,Ridge log-target,weather_enriched__ridge_log__02,"{""alpha"": 1.0}",10.924,75.404,1.512,1.114,-8.631,-0.013,0.055,4,350.78,0.0,1.865,2.408,12.957
+validation,weather_enriched,Ridge log-target,weather_enriched__ridge_log__01,"{""alpha"": 0.1}",10.927,75.404,1.519,1.115,-8.629,-0.013,0.055,4,350.78,0.0,1.832,2.41,12.939
+validation,weather_enriched,Histogram boosting log-target,weather_enriched__hgb_log__03,"{""l2_regularization"": 10.0, ""learning_rate"": 0.03, ""max_depth"": 3, ""max_iter"": 100, ""min_samples_leaf"": 30}",10.854,75.418,1.56,1.134,-9.012,-0.013,0.023,4,351.622,0.54,1.862,2.027,6.812
+validation,weather_enriched,Log-mean baseline,weather_enriched__baseline_log_mean,"{""constant_prediction_ha"": 1.849}",10.862,75.469,1.659,1.147,-9.19,-0.015,0.0,4,352.114,1.849,1.849,1.849,1.849
+validation,weather_enriched,Median baseline,weather_enriched__baseline_median,"{""constant_prediction_ha"": 1.0}",10.729,75.578,0.92,1.2,-10.039,-0.018,-0.096,4,352.963,1.0,1.0,1.0,1.0
+validation,weather_enriched,Histogram boosting Poisson,weather_enriched__hgb_poisson__05,"{""l2_regularization"": 10.0, ""learning_rate"": 0.05, ""max_depth"": 6, ""max_iter"": 100, ""min_samples_leaf"": 20}",11.89,75.31,2.105,1.244,-6.358,-0.01,-0.176,4,319.39,0.215,2.38,4.681,66.168
+validation,weather_enriched,Tweedie,weather_enriched__tweedie__09,"{""alpha"": 0.1, ""power"": 1.9}",14.582,75.214,5.14,1.528,-2.41,-0.008,-0.777,4,342.115,0.398,5.992,8.629,68.42

@@ -1,0 +1,221 @@
+{
+  "presets": {
+    "drought_high": {
+      "preset_key": "drought_high",
+      "preset_label": "Late-Summer Drought (Vinhais Sector)",
+      "zone_select": "vinhais_west",
+      "dryness_level": "high",
+      "alert_date": "2025-08-18",
+      "alert_time": "14:00",
+      "alert_hour": 14.0,
+      "municipality": "Vinhais",
+      "x_etrs89_km": 82.33,
+      "y_etrs89_km": 249.58,
+      "FFMC": 91.6,
+      "DMC": 75.3,
+      "DC": 703.8,
+      "ISI": 7.5,
+      "BUI": 118.8,
+      "FWI": 28.0,
+      "DSR": 9.9,
+      "weather_temp_c": 30.4,
+      "weather_rh_pct": 19.8,
+      "weather_wind_mps": 2.6,
+      "weather_rain_mm_24h": 0.0
+    },
+    "spring_low": {
+      "preset_key": "spring_low",
+      "preset_label": "Spring Mild Ignition (Bragança Sector)",
+      "zone_select": "braganca_north",
+      "dryness_level": "low",
+      "alert_date": "2025-05-14",
+      "alert_time": "12:00",
+      "alert_hour": 12.0,
+      "municipality": "Bragança",
+      "x_etrs89_km": 118.29,
+      "y_etrs89_km": 240.70,
+      "FFMC": 84.5,
+      "DMC": 28.0,
+      "DC": 140.0,
+      "ISI": 3.5,
+      "BUI": 35.0,
+      "FWI": 8.2,
+      "DSR": 1.2,
+      "weather_temp_c": 17.5,
+      "weather_rh_pct": 55.0,
+      "weather_wind_mps": 2.5,
+      "weather_rain_mm_24h": 1.2
+    },
+    "august_moderate": {
+      "preset_key": "august_moderate",
+      "preset_label": "Typical August Afternoon (Bragança Sector)",
+      "zone_select": "central_valley",
+      "dryness_level": "moderate",
+      "alert_date": "2025-08-15",
+      "alert_time": "20:00",
+      "alert_hour": 20.0,
+      "municipality": "Bragança",
+      "x_etrs89_km": 115.91,
+      "y_etrs89_km": 248.94,
+      "FFMC": 92.2,
+      "DMC": 160.3,
+      "DC": 714.7,
+      "ISI": 12.5,
+      "BUI": 205.5,
+      "FWI": 44.9,
+      "DSR": 22.9,
+      "weather_temp_c": 26.3,
+      "weather_rh_pct": 30.7,
+      "weather_wind_mps": 5.1,
+      "weather_rain_mm_24h": 0.0
+    },
+    "extreme_wind": {
+      "preset_key": "extreme_wind",
+      "preset_label": "Extreme Wind & Drought (Southeast Sector)",
+      "zone_select": "southeast_border",
+      "dryness_level": "extreme",
+      "alert_date": "2025-07-27",
+      "alert_time": "13:40",
+      "alert_hour": 13.67,
+      "municipality": "Bragança",
+      "x_etrs89_km": 131.253,
+      "y_etrs89_km": 244.850,
+      "FFMC": 89.32,
+      "DMC": 172.72,
+      "DC": 615.17,
+      "ISI": 8.88,
+      "BUI": 202.97,
+      "FWI": 36.05,
+      "DSR": 15.50,
+      "weather_temp_c": 28.4,
+      "weather_rh_pct": 34.2,
+      "weather_wind_mps": 5.9,
+      "weather_rain_mm_24h": 0.0
+    },
+    "winter_wet": {
+      "preset_key": "winter_wet",
+      "preset_label": "Cool Wet Winter Day (Bragança Sector)",
+      "zone_select": "braganca_north",
+      "dryness_level": "low",
+      "alert_date": "2025-12-25",
+      "alert_time": "18:00",
+      "alert_hour": 18.0,
+      "municipality": "Bragança",
+      "x_etrs89_km": 119.12,
+      "y_etrs89_km": 239.18,
+      "FFMC": 58.8,
+      "DMC": 0.4,
+      "DC": 0.8,
+      "ISI": 0.8,
+      "BUI": 0.3,
+      "FWI": 0.2,
+      "DSR": 0.0,
+      "weather_temp_c": 4.5,
+      "weather_rh_pct": 93.5,
+      "weather_wind_mps": 3.0,
+      "weather_rain_mm_24h": 8.4
+    }
+  },
+  "risk_tiers": {
+    "low": {
+      "tier_name": "Low Risk (< 1.0 ha)",
+      "badge_label": "LOW RISK",
+      "color_name": "Green",
+      "bootstrap_class": "success",
+      "hex_color": "#22c55e",
+      "headline": "Routine Municipal Patrol & Initial Attack Standby",
+      "checklist": [
+        {
+          "icon": "fa-truck-pickup",
+          "title": "1. Field Dispatch: Standard Initial Attack Crew",
+          "detail": "Single municipal forestry light tender sufficient for rapid containment."
+        },
+        {
+          "icon": "fa-eye",
+          "title": "2. Aerial / Tactical Support: Watchtower Surveillance",
+          "detail": "Monitor fine surface litter moisture (FFMC) during afternoon warming."
+        },
+        {
+          "icon": "fa-road",
+          "title": "3. Community & Access Alert: Standard Track Access",
+          "detail": "Verify routine rural firebreak clearance around park trailheads."
+        }
+      ]
+    },
+    "moderate": {
+      "tier_name": "Moderate Risk (1.0 to < 10.0 ha)",
+      "badge_label": "MODERATE RISK",
+      "color_name": "Yellow",
+      "bootstrap_class": "warning",
+      "hex_color": "#eab308",
+      "headline": "Rapid Municipal Forestry Deployment & Perimeter Control",
+      "checklist": [
+        {
+          "icon": "fa-truck-droplet",
+          "title": "1. Field Dispatch: Municipal Rapid-Response Unit",
+          "detail": "Dispatch forestry brigade with medium water tanker to contain flank spread."
+        },
+        {
+          "icon": "fa-trowel-bricks",
+          "title": "2. Aerial / Tactical Support: Perimeter Fuel Breaks",
+          "detail": "Anchor suppression lines along existing ridge tracks and agricultural borders."
+        },
+        {
+          "icon": "fa-wind",
+          "title": "3. Community & Access Alert: Local Slope Wind Watch",
+          "detail": "Track afternoon valley wind shifts that could push flames into pine stands."
+        }
+      ]
+    },
+    "high": {
+      "tier_name": "High Risk (10.0 to < 100.0 ha)",
+      "badge_label": "HIGH RISK",
+      "color_name": "Orange",
+      "bootstrap_class": "orange",
+      "hex_color": "#f97316",
+      "headline": "Multi-Municipal Suppression & Aerial Standby",
+      "checklist": [
+        {
+          "icon": "fa-truck-monster",
+          "title": "1. Field Dispatch: Rapid Forestry Units",
+          "detail": "Position multi-municipal attack crews and heavy water tenders along sector access tracks."
+        },
+        {
+          "icon": "fa-helicopter",
+          "title": "2. Aerial / Tactical Support: Water-Bombing Standby",
+          "detail": "Request initial aerial attack aircraft readiness due to elevated deep soil drought."
+        },
+        {
+          "icon": "fa-bullhorn",
+          "title": "3. Community & Access Alert: Rural Parish Pre-Alert",
+          "detail": "Notify adjacent rural parishes and restrict agricultural machinery or open burning."
+        }
+      ]
+    },
+    "extreme": {
+      "tier_name": "Extreme Risk (>= 100.0 ha)",
+      "badge_label": "EXTREME RISK",
+      "color_name": "Red",
+      "bootstrap_class": "danger",
+      "hex_color": "#ef4444",
+      "headline": "Regional Civil Protection Escalation & Aerial Tactical Attack",
+      "checklist": [
+        {
+          "icon": "fa-jet-fighter-up",
+          "title": "1. Field Dispatch: District ANEPC Reinforcements",
+          "detail": "Mobilize regional civil protection command post and establish village defense perimeters."
+        },
+        {
+          "icon": "fa-helicopter-symbol",
+          "title": "2. Aerial / Tactical Support: Immediate Heavy Air Attack",
+          "detail": "Launch priority heavy amphibious and rotary water-bombing sorties immediately."
+        },
+        {
+          "icon": "fa-triangle-exclamation",
+          "title": "3. Community & Access Alert: Evacuation Readiness",
+          "detail": "Pre-alert isolated hamlets in downwind canyons and close public access to PN Montesinho."
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,339 @@
+{
+  "dataset": "NASA POWER Source Native Resolution Hourly Data",
+  "provider": "NASA Prediction Of Worldwide Energy Resources (POWER)",
+  "retrieved_utc": "2026-08-08T23:14:32.470938+00:00",
+  "api_endpoint": "https://power.larc.nasa.gov/api/temporal/hourly/point",
+  "community": "AG",
+  "time_standard": "UTC",
+  "parameters": {
+    "T2M": "Temperature at 2 metres (degrees Celsius)",
+    "RH2M": "Relative humidity at 2 metres (percent)",
+    "WS10M": "Wind speed at 10 metres (metres per second)",
+    "PRECTOTCORR": "Corrected precipitation; interpreted as mm/hour for hourly API output per API documentation"
+  },
+  "source_resolution": "Meteorology originates from MERRA-2 at 0.5 degree latitude by 0.625 degree longitude",
+  "temporal_coverage_note": "NASA POWER Hourly API is available from 2001-01-01 to near real time",
+  "join_rule": "Convert SGIF alert time from Europe/Lisbon to UTC and use the most recent fully completed weather hour",
+  "documentation": [
+    "https://power.larc.nasa.gov/docs/services/api/temporal/hourly/",
+    "https://power.larc.nasa.gov/docs/methodology/data/sources/",
+    "https://power.larc.nasa.gov/docs/methodology/meteorology/assessment/"
+  ],
+  "grid_cells": [
+    {
+      "weather_grid_lat": 41.5,
+      "weather_grid_lon": -6.875,
+      "event_count": 5,
+      "first_year": 2007,
+      "last_year": 2020
+    },
+    {
+      "weather_grid_lat": 42.0,
+      "weather_grid_lon": -7.5,
+      "event_count": 2,
+      "first_year": 2017,
+      "last_year": 2023
+    },
+    {
+      "weather_grid_lat": 42.0,
+      "weather_grid_lon": -6.875,
+      "event_count": 1617,
+      "first_year": 2004,
+      "last_year": 2025
+    },
+    {
+      "weather_grid_lat": 42.0,
+      "weather_grid_lon": -6.25,
+      "event_count": 20,
+      "first_year": 2004,
+      "last_year": 2025
+    }
+  ],
+  "files": [
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+41.500_lon-006.875_2007_2011.json",
+      "sha256": "35c9409b8691b4a8a8916676050413cd9fd75634255b60ca0596fd1f7ca922e0",
+      "bytes": 3191620,
+      "latitude": 41.5,
+      "longitude": -6.875,
+      "start_year": 2007,
+      "end_year": 2011,
+      "timestamps": 43824,
+      "event_count_for_cell": 5,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=41.500&start=20070101&end=20111231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+41.500_lon-006.875_2012_2016.json",
+      "sha256": "7620b8e092d07d74fa76883ca5e0118a7e483fd7cae139d492c52eda5bab4562",
+      "bytes": 3193168,
+      "latitude": 41.5,
+      "longitude": -6.875,
+      "start_year": 2012,
+      "end_year": 2016,
+      "timestamps": 43848,
+      "event_count_for_cell": 5,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=41.500&start=20120101&end=20161231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+41.500_lon-006.875_2017_2020.json",
+      "sha256": "6f6cc76e93e0621f81ef5f7514832d8fa7f509d7839ec941798ccdf7b5a2ea68",
+      "bytes": 2554467,
+      "latitude": 41.5,
+      "longitude": -6.875,
+      "start_year": 2017,
+      "end_year": 2020,
+      "timestamps": 35064,
+      "event_count_for_cell": 5,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=41.500&start=20170101&end=20201231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-007.500_2017_2021.json",
+      "sha256": "b9288554b7b2ece356a222e0b7de57b90cf81b31d502613b0e75b0f0c33b610d",
+      "bytes": 3193579,
+      "latitude": 42.0,
+      "longitude": -7.5,
+      "start_year": 2017,
+      "end_year": 2021,
+      "timestamps": 43824,
+      "event_count_for_cell": 2,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-7.500&latitude=42.000&start=20170101&end=20211231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-007.500_2022_2023.json",
+      "sha256": "eef468ab663ed9c80a021882f4ee9c81b03ac0b1f6c764f0e76bf5788d06ca24",
+      "bytes": 1278543,
+      "latitude": 42.0,
+      "longitude": -7.5,
+      "start_year": 2022,
+      "end_year": 2023,
+      "timestamps": 17520,
+      "event_count_for_cell": 2,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-7.500&latitude=42.000&start=20220101&end=20231231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.875_2004_2008.json",
+      "sha256": "388b5ae17ae879eb6089c699f1e6173721f936eca99c461d1a8ab338592080d6",
+      "bytes": 3191937,
+      "latitude": 42.0,
+      "longitude": -6.875,
+      "start_year": 2004,
+      "end_year": 2008,
+      "timestamps": 43848,
+      "event_count_for_cell": 1617,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=42.000&start=20040101&end=20081231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.875_2009_2013.json",
+      "sha256": "ae972b83af4d4b53430e735f8d9fbc839b4aee44c3e0bd6fc15dae72ad0b8bc7",
+      "bytes": 3191389,
+      "latitude": 42.0,
+      "longitude": -6.875,
+      "start_year": 2009,
+      "end_year": 2013,
+      "timestamps": 43824,
+      "event_count_for_cell": 1617,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=42.000&start=20090101&end=20131231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.875_2014_2018.json",
+      "sha256": "fe0583bd6efd2b1d87be6f8190cb3a55b0ed5b8979a70be4a38d873de55121dd",
+      "bytes": 3190289,
+      "latitude": 42.0,
+      "longitude": -6.875,
+      "start_year": 2014,
+      "end_year": 2018,
+      "timestamps": 43824,
+      "event_count_for_cell": 1617,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=42.000&start=20140101&end=20181231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.875_2019_2023.json",
+      "sha256": "ab68e4468123c7924eca2a76cc92ac8766d595fe81d933f4e490c5cb487fd367",
+      "bytes": 3192025,
+      "latitude": 42.0,
+      "longitude": -6.875,
+      "start_year": 2019,
+      "end_year": 2023,
+      "timestamps": 43824,
+      "event_count_for_cell": 1617,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=42.000&start=20190101&end=20231231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.875_2024_2025.json",
+      "sha256": "21afd2d6fc08222392a646b70123a080668bf5040f6e19f2fc71ca24be870fcc",
+      "bytes": 1278748,
+      "latitude": 42.0,
+      "longitude": -6.875,
+      "start_year": 2024,
+      "end_year": 2025,
+      "timestamps": 17544,
+      "event_count_for_cell": 1617,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.875&latitude=42.000&start=20240101&end=20251231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.250_2004_2008.json",
+      "sha256": "09d3ecaee68c0020fa338e041314b994472b91d4da32b0b0508571406359387a",
+      "bytes": 3192401,
+      "latitude": 42.0,
+      "longitude": -6.25,
+      "start_year": 2004,
+      "end_year": 2008,
+      "timestamps": 43848,
+      "event_count_for_cell": 20,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.250&latitude=42.000&start=20040101&end=20081231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.250_2009_2013.json",
+      "sha256": "435fcb4da0607841eae19da28029d52e723a53ef024e17148a8b163550d0944b",
+      "bytes": 3190907,
+      "latitude": 42.0,
+      "longitude": -6.25,
+      "start_year": 2009,
+      "end_year": 2013,
+      "timestamps": 43824,
+      "event_count_for_cell": 20,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.250&latitude=42.000&start=20090101&end=20131231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.250_2014_2018.json",
+      "sha256": "78cbf183487a15012739f74460c4e8593edf9ff37ecded84b5690237f29d7aec",
+      "bytes": 3190496,
+      "latitude": 42.0,
+      "longitude": -6.25,
+      "start_year": 2014,
+      "end_year": 2018,
+      "timestamps": 43824,
+      "event_count_for_cell": 20,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.250&latitude=42.000&start=20140101&end=20181231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.250_2019_2023.json",
+      "sha256": "5a721fe2d3d13e6e311fcc6b6c04bd344688d1cbc07bb8f99599a1f0e57208ff",
+      "bytes": 3192274,
+      "latitude": 42.0,
+      "longitude": -6.25,
+      "start_year": 2019,
+      "end_year": 2023,
+      "timestamps": 43824,
+      "event_count_for_cell": 20,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.250&latitude=42.000&start=20190101&end=20231231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    },
+    {
+      "file": "Dataset/nasa_power_hourly/power_hourly_lat+42.000_lon-006.250_2024_2025.json",
+      "sha256": "e32121106f440be691973f9c16ceb2bc172685a501e760367e986137d445246d",
+      "bytes": 1278876,
+      "latitude": 42.0,
+      "longitude": -6.25,
+      "start_year": 2024,
+      "end_year": 2025,
+      "timestamps": 17544,
+      "event_count_for_cell": 20,
+      "request_url": "https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M%2CRH2M%2CWS10M%2CPRECTOTCORR&community=AG&longitude=-6.250&latitude=42.000&start=20240101&end=20251231&format=JSON&time-standard=UTC",
+      "downloaded_this_run": true,
+      "api_version": "v2.9.8",
+      "sources": [
+        "MERRA2",
+        "POWER"
+      ],
+      "fill_value": -999.0
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+field,matched_records,missing_records,coverage_pct
+weather_temp_c,1644,0,100.0
+weather_rh_pct,1644,0,100.0
+weather_wind_mps,1644,0,100.0
+weather_rain_mm_hour,1644,0,100.0
+weather_rain_mm_prev_6h,1644,0,100.0
+weather_rain_mm_prev_24h,1644,0,100.0
